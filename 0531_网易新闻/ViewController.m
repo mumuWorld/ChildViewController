@@ -15,15 +15,31 @@
 #import "DingYueViewController.h"
 #import "KeJiViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<UIScrollViewDelegate>
 
 @property (nonatomic,strong) UIScrollView *titleView;
 @property (nonatomic,strong) UIScrollView *contentView;
+
+/**
+ 保存标题按钮数组§
+ */
+@property (nonatomic,strong) NSMutableArray *titleButtons;
+@property (nonatomic,strong) UIButton *selectButton;//选中按钮
 
 @end
 
 @implementation ViewController
 
+/**
+ 保存标题按钮数组§
+ */
+- (NSMutableArray *)titleButtons
+{
+    if (_titleButtons == nil) {
+        _titleButtons = [[NSMutableArray alloc] init];
+    }
+    return _titleButtons;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     //导航标题
@@ -36,6 +52,9 @@
     [self addChildVC];
     //设置titleview
     [self setupTitleBtn];
+    
+    //iOS7以后，导航控制器中，scrollview 顶部会添加64的额外滚动区域。
+    self.automaticallyAdjustsScrollViewInsets = NO;
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)setupTitleBtn
@@ -49,8 +68,10 @@
         [btn setTitle:vc.title forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btn.tag = i;
+        
         [btn addTarget:self action:@selector(titleViewBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.titleView addSubview:btn];
+        [self.titleButtons addObject:btn];
         //默认选中第一个
         if (i == 0) {
             [self titleViewBtnClick:btn];
@@ -62,18 +83,56 @@
     //隐藏水平滚动条
     self.titleView.showsHorizontalScrollIndicator = NO;
     
-    //iOS7以后，导航控制器中，scrollview 顶部会添加64的额外滚动区域。
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+   
 }
+
+/**
+ 标题按钮点击事件
+
+ @param btn title
+ */
 - (void)titleViewBtnClick:(UIButton *)btn
 {
     NSLog(@"1111=%li",btn.tag);
     NSInteger i = btn.tag;
+    [self selButton:btn];
+    //添加对应的子控制器
+    [self setupOneViewController:i];
+    //contentview滚动到对应的子控制器位置
+    self.contentView.contentOffset = CGPointMake(i*ScreenWidth, 0);
+}
+
+/**
+ 设置选中按钮
+
+ @param btn selectButton
+ */
+- (void)selButton:(UIButton *)btn
+{
+    [_selectButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    _selectButton = btn;
+    //使选中的按钮居中
+    
+}
+
+/**
+ 添加子控制器
+
+ @param i 按钮tag
+ */
+- (void)setupOneViewController:(NSInteger)i
+{
     UIViewController *vc = self.childViewControllers[i];
+    //判断需要加载的子控制器是否加载完成，加载完成就不要加载了，ios9.0之前需要判断父控制器，ios9.0之后只需要判断
+    //vc.viewIfLoaded 即可
+    if (vc.view.superview) {
+        return;
+    }
     CGFloat vcY = CGRectGetMaxY(self.titleView.frame);
     vc.view.frame = CGRectMake(i *ScreenWidth, 0, ScreenWidth, ScreenHeight -vcY);
     [self.contentView addSubview:vc.view];
-    self.contentView.contentOffset = CGPointMake(i*ScreenWidth, 0);
 }
 - (void)addChildVC
 {
@@ -106,7 +165,7 @@
     if (_titleView == nil) {
         CGFloat y = self.navigationController.isNavigationBarHidden ? 20:64;
         _titleView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, y, ScreenWidth, 44)];
-        _titleView.backgroundColor = [UIColor redColor];
+        _titleView.backgroundColor = [UIColor lightGrayColor];
     }
     return _titleView;
 }
@@ -116,8 +175,30 @@
         CGFloat y = CGRectGetMaxY(self.titleView.frame);
         _contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, y, ScreenWidth, ScreenHeight - y)];
         _contentView.backgroundColor = [UIColor lightGrayColor];
+        _contentView.showsHorizontalScrollIndicator = NO;
+        _contentView.pagingEnabled = YES;
+        _contentView.bounces = NO;
+        _contentView.delegate = self;
     }
     return _contentView;
+}
+#pragma mark -----------------scrollview 代理方法
+/**
+ 滚动完成的时候调用
+ */
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //获取当前角标
+    NSInteger i = scrollView.contentOffset.x/ScreenWidth;
+    
+    //获取标题按钮
+    UIButton *titleButton = self.titleButtons[i];
+    
+    //选中标题
+    [self selButton:titleButton];
+    
+    //添加对应的子控制器
+    [self setupOneViewController:i];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
