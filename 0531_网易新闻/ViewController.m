@@ -100,7 +100,9 @@
     //添加对应的子控制器
     [self setupOneViewController:i];
     //contentview滚动到对应的子控制器位置
-    self.contentView.contentOffset = CGPointMake(i*ScreenWidth, 0);
+//    self.contentView.contentOffset = CGPointMake(i*ScreenWidth, 0);
+    //带有动画效果- -。
+    [self.contentView setContentOffset:CGPointMake(i*ScreenWidth, 0) animated:YES];
 }
 
 /**
@@ -110,13 +112,34 @@
  */
 - (void)selButton:(UIButton *)btn
 {
+    //设置临时的button保存上一个选中的button按钮的颜色
     [_selectButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     _selectButton = btn;
     //使选中的按钮居中
-    
+    [self setTitleCenter:btn];
 }
 
+/**
+ 设置标题居中显示
+
+ @param btn 按钮
+ */
+- (void)setTitleCenter:(UIButton *)btn
+{
+    CGFloat offsetX = btn.center.x - ScreenWidth*0.5;
+    NSLog(@"offsetx=%f",offsetX);
+    //如果左边按钮偏移量小0 不移动
+    if (offsetX < 0) {
+        offsetX = 0;
+    }
+    //如果右边按钮偏移量大于最大偏移量不移动
+    CGFloat maxOffsetX = self.titleView.contentSize.width - ScreenWidth;
+    if (offsetX > maxOffsetX) {
+        offsetX = maxOffsetX;
+    }
+    [self.titleView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
+}
 /**
  添加子控制器
 
