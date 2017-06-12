@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B409B0EA1EEE8D87001A6D18 /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B409B0E91EEE8D87001A6D18 /* MMViewController.m */; };
 		B48141A11EDF045E00B9AB2C /* GlobalParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = B48141A01EDF045E00B9AB2C /* GlobalParameter.m */; };
 		B48141A61EDF0E2000B9AB2C /* TouTiaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B48141A51EDF0E2000B9AB2C /* TouTiaoViewController.m */; };
 		B48141A91EDF107700B9AB2C /* ReDianViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B48141A81EDF107700B9AB2C /* ReDianViewController.m */; };
@@ -23,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B409B0E81EEE8D87001A6D18 /* MMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMViewController.h; sourceTree = "<group>"; };
+		B409B0E91EEE8D87001A6D18 /* MMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMViewController.m; sourceTree = "<group>"; };
 		B481419F1EDF045E00B9AB2C /* GlobalParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalParameter.h; sourceTree = "<group>"; };
 		B48141A01EDF045E00B9AB2C /* GlobalParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalParameter.m; sourceTree = "<group>"; };
 		B48141A41EDF0E2000B9AB2C /* TouTiaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouTiaoViewController.h; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				B4DCF36B1EDEFF6F000BA637 /* Supporting Files */,
 				B481419F1EDF045E00B9AB2C /* GlobalParameter.h */,
 				B48141A01EDF045E00B9AB2C /* GlobalParameter.m */,
+				B409B0E81EEE8D87001A6D18 /* MMViewController.h */,
+				B409B0E91EEE8D87001A6D18 /* MMViewController.m */,
 			);
 			path = "0531_网易新闻";
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				B4DCF3701EDEFF6F000BA637 /* AppDelegate.m in Sources */,
 				B48141B21EDF109500B9AB2C /* DingYueViewController.m in Sources */,
 				B48141A61EDF0E2000B9AB2C /* TouTiaoViewController.m in Sources */,
+				B409B0EA1EEE8D87001A6D18 /* MMViewController.m in Sources */,
 				B48141A11EDF045E00B9AB2C /* GlobalParameter.m in Sources */,
 				B48141AC1EDF108300B9AB2C /* ShiPinViewController.m in Sources */,
 				B48141B51EDF10A000B9AB2C /* KeJiViewController.m in Sources */,

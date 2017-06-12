@@ -26,6 +26,11 @@
 @property (nonatomic,strong) NSMutableArray *titleButtons;
 @property (nonatomic,strong) UIButton *selectButton;//选中按钮
 
+/**
+ 判断标题按钮是否加载，如果加载就不要再次加载
+ */
+@property (nonatomic,assign) BOOL isInitialize;
+
 @end
 
 @implementation ViewController
@@ -40,6 +45,16 @@
     }
     return _titleButtons;
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (_isInitialize == NO) {
+        //设置titleview按钮
+        [self setupTitleBtn];
+        _isInitialize = YES;
+    }
+   
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     //导航标题
@@ -48,10 +63,8 @@
     [self.view addSubview:self.titleView];
     //添加contentview
     [self.view addSubview:self.contentView];
-    //添加子控制器
-    [self addChildVC];
-    //设置titleview
-    [self setupTitleBtn];
+    
+    
     
     //iOS7以后，导航控制器中，scrollview 顶部会添加64的额外滚动区域。
     self.automaticallyAdjustsScrollViewInsets = NO;
