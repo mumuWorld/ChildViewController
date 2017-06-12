@@ -131,11 +131,14 @@
     _selectButton = btn;
     //使选中的按钮居中
     [self setTitleCenter:btn];
+    //按钮缩放
 }
-
+- (void)setupTitleScale
+{
+    
+}
 /**
  设置标题居中显示
-
  @param btn 按钮
  */
 - (void)setTitleCenter:(UIButton *)btn
@@ -235,6 +238,44 @@
     
     //添加对应的子控制器
     [self setupOneViewController:i];
+}
+
+/**
+ scrollview滚动的时候调用
+
+ @param scrollView contentview
+ */
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSInteger index = scrollView.contentOffset.x / ScreenWidth;
+    //字体缩放 1.缩放比例 2.缩放按钮
+    NSInteger leftI = index;
+    
+    //获取左边按钮
+    UIButton *leftBtn = self.titleButtons[leftI];
+    //获取右边按钮
+    NSInteger rightI = leftI +1;
+    NSInteger count = self.titleButtons.count;
+    //防止按钮越界
+    UIButton *rightBtn;
+    if (rightI < count) {
+        rightBtn = self.titleButtons[rightI];
+    }
+    CGFloat scaleR = scrollView.contentOffset.x/ScreenWidth;
+    //右边按钮缩放比例 0-1
+    scaleR -= leftI;
+    //左边按钮缩放比例 1-0
+    CGFloat scaleL = 1-scaleR;
+    
+    leftBtn.transform = CGAffineTransformMakeScale(scaleL*0.3 +1, scaleL*0.3 +1);
+    rightBtn.transform = CGAffineTransformMakeScale(scaleR*0.3+1, scaleR*0.3 +1);
+    
+    //颜色渐变
+    UIColor *rightColor = [UIColor colorWithRed:scaleR green:0 blue:0 alpha:1];
+    UIColor *leftColor = [UIColor colorWithRed:scaleL green:0 blue:0 alpha:1];
+    [rightBtn setTitleColor:rightColor forState:UIControlStateNormal];
+    [leftBtn setTitleColor:leftColor forState:UIControlStateNormal];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
