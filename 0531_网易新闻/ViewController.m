@@ -131,12 +131,8 @@
     _selectButton = btn;
     //使选中的按钮居中
     [self setTitleCenter:btn];
-    //按钮缩放
 }
-- (void)setupTitleScale
-{
-    
-}
+
 /**
  设置标题居中显示
  @param btn 按钮
